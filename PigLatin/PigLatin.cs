@@ -81,7 +81,7 @@ namespace PigLatin
                 TranslateWord("dye") == "yeday" && 
                 TranslateWord("bystander") == "ystanderbay" &&
                 TranslateWord("yellow") == "ellowyay" &&
-                TranslateWord("tsktsk") == "tsktskay";
+                TranslateWord("tsktsk") == "tsktskay";//
         }
     }
 }
