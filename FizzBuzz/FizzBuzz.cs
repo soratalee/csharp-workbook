@@ -7,7 +7,7 @@ namespace FizzBuzz
         //Main Code
         static void Main(string[] args)
         {
-            Console.WriteLine("Please enter 1 or 2 for the loop method:" +
+Console.WriteLine("Please choose enter 1 or 2 for the loop method:" +
             "(1) 'For Loop'" +
             "(2) 'While Loop'");
             int Loop_Type = 0;
