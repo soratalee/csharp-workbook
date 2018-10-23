@@ -29,23 +29,23 @@ namespace RockPaperScissors
             String Verdict = "";
 
             //Fixes for scissor text
-            if (hand1.ToLower() == "scissors")
+            if (hand1.ToLower() == "scissor")
             {
-                hand1 = "scissor";
+                hand1 = "scissors";
             }
 
             //Win/Loss/Tie logic Returns the outcome to Main
             if (hand1 == hand2)
             {
-                Verdict = "It's a tie!";
+                Verdict = "You chose "+hand1+". The Computer chose "+ hand2+"... It's a tie!";
             }
-            if ((hand1.ToLower() == "rock" && hand2.ToLower() == "scissor") | (hand1.ToLower() == "scissor" && hand2.ToLower() == "paper") | (hand1.ToLower() == "paper" && hand2.ToLower() == "rock"))
+            if ((hand1.ToLower() == "rock" && hand2.ToLower() == "scissors") | (hand1.ToLower() == "scissors" && hand2.ToLower() == "paper") | (hand1.ToLower() == "paper" && hand2.ToLower() == "rock"))
             {
-                Verdict = "You win!";
+                Verdict = "You chose "+hand1+". The Computer chose "+ hand2+"... You win!";
             }
-            if ((hand1.ToLower() == "scissor" && hand2.ToLower() == "rock") | (hand1.ToLower() == "paper" && hand2.ToLower() == "scissor") | (hand1.ToLower() == "rock" && hand2.ToLower() == "paper"))
+            if ((hand1.ToLower() == "scissors" && hand2.ToLower() == "rock") | (hand1.ToLower() == "paper" && hand2.ToLower() == "scissors") | (hand1.ToLower() == "rock" && hand2.ToLower() == "paper"))
             {
-                Verdict = "Computer player wins!";
+                Verdict = "You chose "+hand1+". The Computer chose "+ hand2+"... Computer player wins!";
             }
             return Verdict;
         }
@@ -68,7 +68,7 @@ namespace RockPaperScissors
             }
             if (Random == 3)
             {
-                ComputerHand = "scissor";
+                ComputerHand = "scissors";
             }
             return ComputerHand;
         }
