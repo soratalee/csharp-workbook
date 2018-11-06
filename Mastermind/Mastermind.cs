@@ -17,7 +17,8 @@ namespace MasterMind
 
         public Game()
         {
-            theAnswer = new String[] { "a", "b", "c", "d" };
+            //theAnswer = new String[] { "a", "b", "c", "d" };
+            theAnswer = new String[4];
             //Guesses as a list of rows. New Row
             guesses = new List<Row>();
         }
@@ -27,12 +28,23 @@ namespace MasterMind
             //Start out game is not won.
             bool won = false;
             //Keep track of turns
-            int numTurns = 0;
-            //While the game is not won, and less than 10 turns have been played, process the game.
-            while (!won && numTurns < 3)
+            int numTurns = 10;
+            //Random Answer
+            for (int a = 0; a < 4; a++)
             {
+                theAnswer[a] = GetLetter().ToString();
+            }
+            //Display Cheat
+            Console.WriteLine("Cheat-Sheet: [{0}]",string.Join("", theAnswer));
+
+            //While the game is not won, and less than 10 turns have been played, process the game.
+            while (!won && numTurns > 0)
+            {
+                //Display turns left
+                Console.WriteLine("You have {0} turns left.", numTurns);
                 //display all the previous guesses
                 displayAllGuess();
+
                 //ask the user for the next guess
                 Row newGuess = null;
                 try
@@ -48,9 +60,10 @@ namespace MasterMind
                 {
                     //Add their guess to the list of guesses
                     guesses.Add(newGuess);
-                    //evaluate their guess, and see if they won
+                    //evaluate their guess, and see if they won    
+                    won = checkForWin(newGuess);
 
-                    String theHint = getHint();
+                    String theHint = getHint(newGuess);
                     newGuess.hint = theHint;
 
                     //If the game hasn't been won, display hint
@@ -58,18 +71,18 @@ namespace MasterMind
                     {
                         Console.WriteLine("Your hint is " + theHint);
                     }
-                    //increment the number of turns played
-                    numTurns++;
-                    for (int i = 0; i < 4; i++)
+                    else
                     {
-                        Console.WriteLine(newGuess.balls[i]);
+                        Console.WriteLine("You have won!");
+                        Console.ReadLine();
                     }
-
+                    //increment the number of turns played
+                    numTurns--;
                 }
             }
         }
 
-        public String getHint()
+        public String getHint(Row newGuess)
         {
             Row lastGuess = guesses[guesses.Count - 1];
             int Red = 0;
@@ -78,14 +91,32 @@ namespace MasterMind
             //Clone theAnswer so input doesn't overwrite the answer.
             string[] theAnswerClone = (string[])this.theAnswer.Clone();
             //Red for letter and position matching
-            Console.WriteLine(theAnswerClone[0]);
-
-            //figures out the score;
-            return "0-0";
+            for (int i = 0; i < 4; i++)
+            {
+                //if position 'i' matches with the ball's position 'i', grant Red flag
+                if (theAnswerClone[i] == newGuess.balls[i].letter)
+                {
+                    Red++;
+                }
+            }
+            for (int b = 0; b < 4; b++)
+            {
+                //Creates array index and checks if the input letters exist within answer
+                int foundIndex = Array.IndexOf(theAnswerClone, newGuess.balls[b].letter);
+                if (foundIndex > -1)
+                {
+                    White++;
+                    theAnswerClone[foundIndex] = null;
+                }
+            }
+            //Returns Red flag count and White flag count
+            return $"{Red} - {White - Red}";
         }
-        public bool checkForWin()
+
+        //Check for win method.
+        public bool checkForWin(Row newGuess)
         {
-            if (getHint() == "4-0")
+            if (getHint(newGuess) == "4 - 0")
             {
                 return true;
             }
@@ -116,6 +147,13 @@ namespace MasterMind
             {
                 Console.WriteLine(guess.toString());
             }
+        }
+        public static char GetLetter()
+        {
+            string chars = "abcdefghijklmnopqrstuvwxyz";
+            Random rand = new Random();
+            int num = rand.Next(0, chars.Length - 1);
+            return chars[num];
         }
 
     }
