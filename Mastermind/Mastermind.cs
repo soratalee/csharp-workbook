@@ -1,86 +1,167 @@
 ﻿using System;
-
-namespace Mastermind
+using System.Collections.Generic;
+namespace MasterMind
 {
     class Program
     {
-        // possible letters in code
-        public static char[] letters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
-        
-        // size of code
-        public static int codeSize = 4;
-        
-        // number of allowed attempts to crack the code
-        public static int allowedAttempts = 10;
-        
-        // number of tried guesses
-        public static int numTry = 0;
-        
-        // test solution
-        public static char[] solution = new char[] {'a', 'b', 'c', 'd'};
-        
-        // game board
-        public static string[][] board = new string[allowedAttempts][];
-        
-        
-        public static void Main()
+        public static void Main(string[] args)
         {
-            char[] guess = new char[4];
+            Game game = new Game();
+            game.run();
+        }
+    }
+    class Game
+    {
+        List<Row> guesses;
+        String[] theAnswer;
 
-            CreateBoard();
-            DrawBoard();
-            Console.WriteLine("Enter Guess:");
-            guess = Console.ReadLine().ToCharArray();
-
-            // leave this command at the end so your program does not close automatically
-            Console.ReadLine();
-        }
-        
-        public static bool CheckSolution(char[] guess)
+        public Game()
         {
-            // Your code here
-
-            return false;
+            theAnswer = new String[] { "a", "b", "c", "d" };
+            //Guesses as a list of rows. New Row
+            guesses = new List<Row>();
         }
-        
-        public static string GenerateHint(char[] guess)
+        //Method for run
+        public void run()
         {
-            // Your code here
-            return " ";
-        }
-        
-        public static void InsertCode(char[] guess)
-        {
-            // Your code here
-        }
-        
-        public static void CreateBoard()
-        {
-            for (var i = 0; i < allowedAttempts; i++)
+            //Start out game is not won.
+            bool won = false;
+            //Keep track of turns
+            int numTurns = 0;
+            //While the game is not won, and less than 10 turns have been played, process the game.
+            while (!won && numTurns < 3)
             {
-                board[i] = new string[codeSize + 1];
-                for (var j = 0; j < codeSize + 1; j++)
+                //display all the previous guesses
+                displayAllGuess();
+                //ask the user for the next guess
+                Row newGuess = null;
+                try
                 {
-                    board[i][j] = " ";
+                    newGuess = getUserGuess();
+                }
+                catch
+                {
+                    Console.WriteLine("Bad entry. you don't lose a turn");
+                }
+
+                if (newGuess != null)
+                {
+                    //Add their guess to the list of guesses
+                    guesses.Add(newGuess);
+                    //evaluate their guess, and see if they won
+
+                    String theHint = getHint();
+                    newGuess.hint = theHint;
+
+                    //If the game hasn't been won, display hint
+                    if (!won)
+                    {
+                        Console.WriteLine("Your hint is " + theHint);
+                    }
+                    //increment the number of turns played
+                    numTurns++;
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Console.WriteLine(newGuess.balls[i]);
+                    }
+
                 }
             }
         }
-        
-        public static void DrawBoard()
+
+        public String getHint()
         {
-            for (var i = 0; i < board.Length; i++)
-            {
-                Console.WriteLine("|" + String.Join("|", board[i]));
-            }
-            
+            Row lastGuess = guesses[guesses.Count - 1];
+            int Red = 0;
+            int White = 0;
+
+            //Clone theAnswer so input doesn't overwrite the answer.
+            string[] theAnswerClone = (string[])this.theAnswer.Clone();
+            //Red for letter and position matching
+            Console.WriteLine(theAnswerClone[0]);
+
+            //figures out the score;
+            return "0-0";
         }
-        
-        public static void GenerateRandomCode() {
-            Random rnd = new Random();
-            for(var i = 0; i < codeSize; i++)
+        public bool checkForWin()
+        {
+            if (getHint() == "4-0")
             {
-                solution[i] = letters[rnd.Next(0, letters.Length)];
+                return true;
             }
+            else
+            {
+                return false;
+            }
+        }
+        //Getting the user's guess list
+        public Row getUserGuess()
+        {
+            Console.Write("Enter your guess as 4 letters: ");
+            String guess = Console.ReadLine();
+            guess = guess.ToLower();
+            guess = guess.Trim();
+            if (guess.Length != 4)
+            {
+                throw new Exception("Guess should be 4 letters!");
+            }
+
+            Row theNewRow = new Row(guess);
+            return theNewRow;
+        }
+        //Method for displaying all guesses
+        public void displayAllGuess()
+        {
+            foreach (Row guess in guesses)
+            {
+                Console.WriteLine(guess.toString());
+            }
+        }
+
+    }
+    //Class for Row. This keeps track of the user's guesses for a turn
+    class Row
+    {
+        public Ball[] balls { get; set; }
+        public string hint { get; set; }
+        //Creates a new row with the 4 balls passed in 
+        public Row(String letters)
+        {
+            if (letters.Length != 4)
+            {
+                throw new Exception("Row contructor takes in a string of 4!");
+            }
+            else
+            {
+                balls = new Ball[4];
+                char[] temp = letters.ToCharArray();
+                for (int i = 0; i < 4; i++)
+                {
+                    balls[i] = new Ball(temp[i].ToString());
+                }
+            }
+        }
+        //returns a string representation of the row
+        public String toString()
+        {
+            string formatted = "";
+            foreach (Ball ball in balls)
+            {
+                formatted += ball.letter + " ";
+            }
+            return formatted.Trim() + " -> " + hint;
+        }
+    }
+
+    //Class for Ball
+    class Ball
+    {
+        //Sets the variable Letter
+        public string letter { get; private set; }
+        //Each Ball has a Letter. Constructor that sets the letters for the ball
+        public Ball(string letter)
+        {
+            this.letter = letter;
         }
     }
 }
