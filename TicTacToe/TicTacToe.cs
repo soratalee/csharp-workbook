@@ -105,8 +105,9 @@ namespace TicTacToe
                 if (playerTurn == "X")
                 {
                     playerTurn = "O";
+                } else {
+                    playerTurn = "X";
                 }
-                else playerTurn = "X";
             }
         }
 
