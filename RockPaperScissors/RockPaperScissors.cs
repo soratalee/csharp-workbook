@@ -16,6 +16,7 @@ namespace RockPaperScissors
             while (endGame == false)
             {
                 Console.WriteLine("Enter your hand:");
+                //Add Try-Catch-Finally for error handling
                 try
                 {
                     hand1 = Console.ReadLine().ToLower();
