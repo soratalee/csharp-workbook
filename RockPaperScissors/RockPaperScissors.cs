@@ -1,18 +1,58 @@
 ﻿using System;
 
+
 namespace RockPaperScissors
 {
     class Program
     {
         public static void Main()
         {
-            Console.WriteLine("Enter your hand:");
-            string hand1 = Console.ReadLine().ToLower();
-            string hand2 = ComputerHandGenerator();
-            Console.WriteLine(CompareHands(hand1, hand2));
+            string hand1 = "";
+            bool endGame = false;
+            //Read user's input
 
-            // leave this command at the end so your program does not close automatically
-            Console.ReadLine();
+
+            //Try-Catch-Finally for error handling
+            while (endGame == false)
+            {
+                Console.WriteLine("Enter your hand:");
+                //Add Try-Catch-Finally for error handling.
+                try
+                {
+                    hand1 = Console.ReadLine().ToLower();
+                }
+                catch
+                {
+                    Console.WriteLine("Error. Please enter a valid hand ('rock','paper','scissors')!");
+                }
+                finally
+                {
+                    Console.WriteLine("Displaying results...");
+                }
+
+                string hand2 = ComputerHandGenerator();
+
+                if (hand1 == "bazooka")
+                {
+                    Console.WriteLine("You have played Bazooka. You win despite the Computer's hand!");
+                    Console.ReadLine();
+                    //If user enters 'bazooka', the game will end with the user's win condition being met.
+                    break;
+                }
+                //Tests 1 nd 2 for valid input
+                if (test1(hand1) && test1(hand2))
+                {
+                    Console.WriteLine(CompareHands(hand1, hand2));
+                    endGame = true;
+                }
+
+                else 
+                {
+                    Console.WriteLine("Error. Please enter a valid hand ('rock','paper','scissors')!");
+                }
+                // leave this command at the end so your program does not close automatically
+                Console.ReadLine();
+            }
         }
 
         public static string CompareHands(string hand1, string hand2)
@@ -25,26 +65,30 @@ namespace RockPaperScissors
                 hand1 = "scissors";
             }
 
-            // Your code here
-            if (hand1 == hand2)
+            //Win/Loss/Tie logic Returns the outcome to Main
+
+            else if (hand1 == hand2)
             {
-                Verdict = "You chose "+hand1+". The Computer chose "+ hand2+"... It's a tie!";
+                Verdict = "You chose " + hand1 + ". The Computer chose " + hand2 + "... It's a tie!";
             }
-            if ((hand1.ToLower() == "rock" && hand2.ToLower() == "scissors") | (hand1.ToLower() == "scissors" && hand2.ToLower() == "paper") | (hand1.ToLower() == "paper" && hand2.ToLower() == "rock"))
+            else if ((hand1.ToLower() == "rock" && hand2.ToLower() == "scissors") | (hand1.ToLower() == "scissors" && hand2.ToLower() == "paper") | (hand1.ToLower() == "paper" && hand2.ToLower() == "rock"))
             {
-                Verdict = "You chose "+hand1+". The Computer chose "+ hand2+"... You win!";
+                Verdict = "You chose " + hand1 + ". The Computer chose " + hand2 + "... You win!";
             }
-            if ((hand1.ToLower() == "scissors" && hand2.ToLower() == "rock") | (hand1.ToLower() == "paper" && hand2.ToLower() == "scissors") | (hand1.ToLower() == "rock" && hand2.ToLower() == "paper"))
+            else if ((hand1.ToLower() == "scissors" && hand2.ToLower() == "rock") | (hand1.ToLower() == "paper" && hand2.ToLower() == "scissors") | (hand1.ToLower() == "rock" && hand2.ToLower() == "paper"))
             {
-                Verdict = "You chose "+hand1+". The Computer chose "+ hand2+"... Computer player wins!";
+                Verdict = "You chose " + hand1 + ". The Computer chose " + hand2 + "... Computer player wins!";
             }
             return Verdict;
         }
+
+        //Computer random generator based on numberical value
         public static string ComputerHandGenerator()
         {
             String ComputerHand = "";
+            //Random numbers 1-3
             Random r = new Random();
-            int Random = (r.Next(1,4));
+            int Random = (r.Next(1, 4));
 
             if (Random == 1)
             {
@@ -59,6 +103,26 @@ namespace RockPaperScissors
                 ComputerHand = "scissors";
             }
             return ComputerHand;
+        }
+
+        //Test 1 for Human Input
+        public static bool test1(string hand1)
+        {
+            return
+                hand1 == "rock" ||
+                hand1 == "scissors" ||
+                hand1 == "scissor" ||
+                hand1 == "paper";
+        }
+
+        //Test 2 for Computer Input
+        public static bool test2(string hand2)
+        {
+            return
+                hand2 == "rock" ||
+                hand2 == "scissors" ||
+                hand2 == "scissor" ||
+                hand2 == "paper";
         }
     }
 }
