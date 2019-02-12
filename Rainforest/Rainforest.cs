@@ -42,7 +42,7 @@ namespace Rainforest
     public class Item
     {
         //int id = 0;
-        private string itemName = null; //{get; private set;}
+        public string itemName {get; private set;}
         //int size = 0
         public Item(string itemName)
         {
@@ -56,18 +56,21 @@ namespace Rainforest
     public class Container
     {
         //int id = 0;
-        string containerName = null;
-        string itemName = null;
+        public string containerName {get; private set;}
+        public string itemName {get; private set;}
         // /int size = 0;
-        public List<Item> itemList = new List<Item>();
+        public List<String> itemList = new List<String>();
+        //Creating a constructor for the class Container
         public Container(string containerName)
         {
             this.containerName = containerName;
         }
         public void addItemToContainer(string item)
         {
-            itemList.Add(new Item(itemName = item));
+            //this.itemList = item;
+            itemList.Add(item);
         }
+        //Creating a method for printing container
         public string printContainer()
         {
             //Console.WriteLine(containerName);
@@ -82,18 +85,20 @@ namespace Rainforest
     }
     public class Warehouse
     {
-        string location = null;
-        string containerName = null;
+        public string location {get; private set;}
+        public string containerName {get; private set;}
         //int size = 0;
         public List<Container> containerList = new List<Container>();
         public Warehouse(string location)
         {
             this.location = location;
         }
+         //Creating a method for adding container list
         public void addContainerID(string containerID)
         {
             containerList.Add(new Container(containerName = containerID));
         }
+         //Creating a method for printing warehouse
         public string printWarehouse()
         {
             //Console.WriteLine(containerName);
