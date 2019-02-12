@@ -11,7 +11,7 @@ namespace Rainforest
             Houstin.addContainerID("Houstin-01");
             Houstin.addContainerID("Houstin-02");
             Houstin.addContainerID("Houstin-03");
-            
+
             Warehouse Austin = new Warehouse("Austin");
             Austin.addContainerID("Austin-01");
             Austin.addContainerID("Austin-02");
@@ -20,9 +20,10 @@ namespace Rainforest
             Houstin01.addItemToContainer("bananas");
             Houstin01.addItemToContainer("apples");
 
+            Item milk = new Item("milk");
+            Item bread = new Item("bread");
             Container Houstin02 = new Container("Houstin-02");
-            Houstin02.addItemToContainer("bread");
-            Houstin02.addItemToContainer("milk");
+            Houstin02.addItemToContainer(milk);
 
             Container Austin01 = new Container("Austin-01");
             Austin01.addItemToContainer("strawberry");
@@ -69,11 +70,11 @@ namespace Rainforest
         public string printContainer()
         {
             //Console.WriteLine(containerName);
-            
+
             string result = "";
             foreach (var o in itemList)
             {
-                result+=o.printItem()+"\n";
+                result += o.printItem() + "\n";
             }
             return result;
         }
@@ -94,14 +95,14 @@ namespace Rainforest
         }
         public string printWarehouse()
         {
-           //Console.WriteLine(containerName);
-           
-           string result = null;
-           foreach (var o in containerList)
-           {
-               result+=o.printContainer()+"\n";
-           }
-           return result;
+            //Console.WriteLine(containerName);
+
+            string result = null;
+            foreach (var o in containerList)
+            {
+                result += o.printContainer() + "\n";
+            }
+            return result;
         }
     }
 }
