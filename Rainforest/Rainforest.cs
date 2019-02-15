@@ -7,108 +7,104 @@ namespace Rainforest
     {
         public static void Main()
         {
-            Warehouse Houstin = new Warehouse("Houstin");
-            Houstin.addContainerID("Houstin-01");
-            Houstin.addContainerID("Houstin-02");
-            Houstin.addContainerID("Houstin-03");
+            //Instantiate Inventory
+            Inventory inventorylist = new Inventory();
 
-            Warehouse Austin = new Warehouse("Austin");
-            Austin.addContainerID("Austin-01");
-            Austin.addContainerID("Austin-02");
+            //Instantiate new Warehouses
+            Warehouse Houstin = new Warehouse("Houstin", new Dictionary<string,Container>());
+            Warehouse Austin = new Warehouse("Austin", new Dictionary<string,Container>());
 
-            Container Houstin01 = new Container("Houstin-01");
-            Houstin01.addItemToContainer("bananas");
-            Houstin01.addItemToContainer("apples");
+            //Instantiate new Containers
+            Container Houstin01 = new Container("Houstin-01", new List<Item>());
+            Container Houstin02 = new Container("Houstin-02", new List<Item>());
+            Container Austin01 = new Container("Austin-01", new List<Item>());
+            Container Austin02 = new Container("Austin-02", new List<Item>());
 
+            //Instantiate new Items
             Item milk = new Item("milk");
             Item bread = new Item("bread");
-            Container Houstin02 = new Container("Houstin-02");
-            Houstin02.addItemToContainer(milk);
-            Houstin02.addItemToContainer(bread);
+            Item banana = new Item("banana");
+            Item apple = new Item("apple");
+            Item salad = new Item("salad");
+            Item juice = new Item("juice");
+            Item ham = new Item("ham");
+            Item pineapple = new Item("pineapple");
 
-            Container Austin01 = new Container("Austin-01");
-            Austin01.addItemToContainer("strawberry");
-            Austin01.addItemToContainer("pineapple");
+            //Insert Warehouse to Inventory
+            inventorylist.inventory.Add("Houstin",Houstin);
+            inventorylist.inventory.Add("Austin",Austin);
 
-            Container Austin02 = new Container("Austin-02");
-            Austin02.addItemToContainer("orange juice");
-            Austin02.addItemToContainer("salad");
+            //Insert Container to Warehouse
+            Houstin.containerList.Add("Houstin01",Houstin01);
+            Houstin.containerList.Add("Houstin02",Houstin02);
+            Austin.containerList.Add("Austin01",Austin01);
+            Austin.containerList.Add("Austin02",Austin02);
 
-            Console.WriteLine(Houstin01.printContainer());
-            Console.WriteLine("---------------------------");
-            Console.WriteLine(Houstin.printWarehouse());
+            //Insert Item to Container
+            Austin01.itemList.Add(milk);
+            Austin01.itemList.Add(bread);
+            Austin02.itemList.Add(banana);
+            Austin02.itemList.Add(milk);
+            Houstin01.itemList.Add(salad);
+            Houstin01.itemList.Add(bread);
+            Houstin02.itemList.Add(juice);
+            Houstin02.itemList.Add(ham);
+            Houstin02.itemList.Add(pineapple);
+            
+            inventorylist.printInventory();
         }
-    }
-    public class Item
-    {
-        //int id = 0;
-        public string itemName {get; private set;}
-        //int size = 0
-        public Item(string itemName)
-        {
-            this.itemName = itemName;
-        }
-        public string printItem()
-        {
-            return itemName;
-        }
-    }
-    public class Container
-    {
-        //int id = 0;
-        public string containerName {get; private set;}
-        public string itemName {get; private set;}
-        // /int size = 0;
-        public List<String> itemList = new List<String>();
-        //Creating a constructor for the class Container
-        public Container(string containerName)
-        {
-            this.containerName = containerName;
-        }
-        public void addItemToContainer(string item)
-        {
-            //this.itemList = item;
-            itemList.Add(item);
-        }
-        //Creating a method for printing container
-        public string printContainer()
-        {
-            //Console.WriteLine(containerName);
 
-            string result = "";
-            foreach (var o in itemList)
+        public class Inventory
+        {
+            public Dictionary<string, Warehouse> inventory = new Dictionary<string, Warehouse>();
+            public void printInventory()
             {
-                result += o.printItem() + "\n";
+                foreach (KeyValuePair<string, Warehouse> warehouse in this.inventory)
+                {
+                    Console.WriteLine("Warehouse: " + warehouse.Key);
+                    foreach (KeyValuePair<string, Container> containers in warehouse.Value.containerList)
+                    {
+                        Console.WriteLine("     Container: " + containers.Key);
+                        foreach (Item item in containers.Value.itemList)
+                        {
+                            Console.WriteLine("         Item: " + item.itemName);
+                        }
+                    }
+                }
             }
-            return result;
         }
-    }
-    public class Warehouse
-    {
-        public string location {get; private set;}
-        public string containerName {get; private set;}
-        //int size = 0;
-        public List<Container> containerList = new List<Container>();
-        public Warehouse(string location)
+        public class Item
         {
-            this.location = location;
-        }
-         //Creating a method for adding container list
-        public void addContainerID(string containerID)
-        {
-            containerList.Add(new Container(containerName = containerID));
-        }
-         //Creating a method for printing warehouse
-        public string printWarehouse()
-        {
-            //Console.WriteLine(containerName);
-
-            string result = null;
-            foreach (var o in containerList)
+            //int id = 0;
+            public string itemName { get; private set; }
+            //int size = 0
+            public Item(string itemName)
             {
-                result += o.printContainer() + "\n";
+                this.itemName = itemName;
             }
-            return result;
+        }
+        public class Container
+        {
+            public string containerName { get; private set; }
+            public List<Item> itemList = new List<Item>();
+            //Creating a constructor for the class Container
+            public Container(string containerName, List<Item> Items)
+            {
+                this.containerName = containerName;
+                this.itemList = Items;
+            }
+        }
+        public class Warehouse
+        {
+            public string warehouseName { get; private set; }
+            public Dictionary<string, Container> containerList = new Dictionary<string, Container>();
+                //public List<Container> containerList = new List<Container>();
+            //Creating a constructor for the class Container
+            public Warehouse(string warehouseName, Dictionary<string,Container> Containers)
+            {
+                this.warehouseName = warehouseName;
+                this.containerList = Containers;
+            }
         }
     }
 }
