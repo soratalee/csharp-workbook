@@ -10,32 +10,60 @@ namespace TowersOfHanoi
         {
             //Instantiate new game
             Game newGame = new Game();
-            Block one = new Block(1, 1);
-            Block two = new Block(2, 2);
-            Block three = new Block(3, 3);
-            Block four = new Block(4, 4);
+            Block one = new Block(1);
+            Block two = new Block(2);
+            Block three = new Block(3);
+            Block four = new Block(4);
+
+            //Instantiate new towers
             Tower A = new Tower("A");
             Tower B = new Tower("B");
             Tower C = new Tower("C");
-            Tower.blocks.Push(one);
-            Tower.blocks.Push(two);
-            Tower.blocks.Push(three);
-            Tower.blocks.Push(four);
+            
+            //Insert towers into dictionary
+            newGame.towers.Add("A", new int[] { });
+            newGame.towers.Add("B", new int[] { });
+            newGame.towers.Add("C", new int[] { });
 
-            printBlocks();
+            //Insert blocks to Towers
+            A.pushToTower(one.weight);
+            A.pushToTower(two.weight);
+            A.pushToTower(three.weight);
+            A.pushToTower(four.weight);
+
+            //Draw Tower
+            newGame.printTowerKeys();
+
+        }
+    }
+    public class Game
+    {
+        public Dictionary<string, int[]> towers = new Dictionary<string, int[]>();
+        
+        public void moveBlock()
+        {
+
+        }
+        public void printTowerKeys()
+        {
+            foreach (var towerKey in towers.Keys)
+            {
+                Console.WriteLine("Tower: " + towerKey);
+                foreach (var towerName in towers[towerKey])
+                {
+                    Console.WriteLine(towerName);
+                }
+            }
         }
     }
     public class Block
     {
         //Constructor for Block
-        public Block(int weight, int blockNumber)
+        public Block(int weight)
         {
             this.weight = weight;
-            this.blockNumber = blockNumber;
         }
         public int weight { get; private set; }
-        public int blockNumber { get; private set; }
-
     }
 
     public class Tower
@@ -47,20 +75,5 @@ namespace TowersOfHanoi
         {
             this.towerName = towerName;
         }
-        public string printBlocks()
-        {
-            string result = "";
-            foreach (var blockName in blocks)
-            {
-                result += Convert.ToString(blockName);
-            }
-            return result;
-        }
-    }
-
-    public class Game
-    {
-        public Dictionary<string, Tower> towers = new Dictionary<string, Tower>();
-
     }
 }
