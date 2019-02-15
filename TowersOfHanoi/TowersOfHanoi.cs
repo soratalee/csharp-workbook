@@ -16,20 +16,20 @@ namespace TowersOfHanoi
             Block four = new Block(4);
 
             //Instantiate new towers
-            Tower A = new Tower("A");
-            Tower B = new Tower("B");
-            Tower C = new Tower("C");
+            Tower A = new Tower("A", new Stack<Block>());
+            Tower B = new Tower("B", new Stack<Block>());
+            Tower C = new Tower("C", new Stack<Block>());
             
             //Insert towers into dictionary
-            newGame.towers.Add("A", new int[] { });
-            newGame.towers.Add("B", new int[] { });
-            newGame.towers.Add("C", new int[] { });
+            newGame.towers.Add("A", A);
+            newGame.towers.Add("B", B);
+            newGame.towers.Add("C", C);
 
             //Insert blocks to Towers
-            A.pushToTower(one.weight);
-            A.pushToTower(two.weight);
-            A.pushToTower(three.weight);
-            A.pushToTower(four.weight);
+            A.blocks.Push(one);
+            A.blocks.Push(two);
+            A.blocks.Push(three);
+            A.blocks.Push(four);
 
             //Draw Tower
             newGame.printTowerKeys();
@@ -38,7 +38,7 @@ namespace TowersOfHanoi
     }
     public class Game
     {
-        public Dictionary<string, int[]> towers = new Dictionary<string, int[]>();
+        public Dictionary<string, Tower> towers = new Dictionary<string, Tower>();
         
         public void moveBlock()
         {
@@ -46,12 +46,12 @@ namespace TowersOfHanoi
         }
         public void printTowerKeys()
         {
-            foreach (var towerKey in towers.Keys)
+            foreach (KeyValuePair<string, Tower> tower in this.towers)
             {
-                Console.WriteLine("Tower: " + towerKey);
-                foreach (var towerName in towers[towerKey])
+                Console.WriteLine("Tower: " + tower.Key);
+                foreach (Block block in tower.Value.blocks)
                 {
-                    Console.WriteLine(towerName);
+                    Console.WriteLine(block.weight);
                 }
             }
         }
@@ -69,11 +69,17 @@ namespace TowersOfHanoi
     public class Tower
     {
         public string towerName;
-        public static Stack blocks = new Stack();
+        public Stack<Block> blocks = new Stack<Block>();
         //Constructor for Tower
-        public Tower(string towerName)
+        public Tower(string towerName, Stack<Block> Blocks)
         {
             this.towerName = towerName;
+            this.blocks = Blocks;
+        }
+
+        public void insertToTower()
+        {
+
         }
     }
 }
