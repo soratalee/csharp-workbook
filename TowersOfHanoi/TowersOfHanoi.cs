@@ -19,7 +19,7 @@ namespace TowersOfHanoi
             Tower A = new Tower("A", new Stack<Block>());
             Tower B = new Tower("B", new Stack<Block>());
             Tower C = new Tower("C", new Stack<Block>());
-            
+
             //Initial Insert towers into dictionary
             newGame.towers.Add("A", A);
             newGame.towers.Add("B", B);
@@ -30,21 +30,33 @@ namespace TowersOfHanoi
             A.blocks.Push(three);
             A.blocks.Push(two);
             A.blocks.Push(one);
-            
-            
+
+
             //Move pieces
             string consoleMoveFrom;
             string consoleMoveTo;
 
-            Console.WriteLine("Enter in tower(A, B, or C) to move FROM:");
-            consoleMoveFrom = (Console.ReadLine());
-            
-            Console.WriteLine("Enter in tower(A, B, or C) to move TO:");
-            consoleMoveTo = (Console.ReadLine());
+            while (newGame.checkForWin() == false)
+            {
+                Console.WriteLine("Enter in tower(A, B, or C) to move FROM:");
+                consoleMoveFrom = (Console.ReadLine());
 
-            newGame.movePiece(consoleMoveFrom, consoleMoveTo);
-            //Draw Tower
-            newGame.printTowerKeys();
+                Console.WriteLine("Enter in tower(A, B, or C) to move TO:");
+                consoleMoveTo = (Console.ReadLine());
+
+                if (newGame.isLegal(newGame.towers[consoleMoveFrom], newGame.towers[consoleMoveTo]))
+                {
+                    newGame.movePiece(newGame.towers[consoleMoveFrom], newGame.towers[consoleMoveTo]);
+                }
+                else
+                {
+                    Console.WriteLine("You have entered a wrong move. Please enter in a correct move sequence!");
+                }
+
+                //Draw Tower
+                newGame.printTowerKeys();
+            }
+
         }
     }
     public class Game
@@ -67,33 +79,55 @@ namespace TowersOfHanoi
         {
             moveTo.blocks.Push(moveFrom.blocks.Peek());
             moveFrom.blocks.Pop();
+
+        }
+
+        public bool isLegal(Tower moveFrom, Tower moveTo)
+        {
+            Block popOff = moveFrom.blocks.Peek();
+            Block pushOn;
+            if (moveTo.blocks.Count > 0)
+            {
+                pushOn = moveTo.blocks.Peek();
+            }
+            else
+                pushOn = null;
+
+
+            if (pushOn == null)
+            {
+                return true;
+            }
+            else if (popOff.weight < pushOn.weight)
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        public bool checkForWin()
+        {
+            if (towers["B"].blocks.Count == 4)
+            {
+                return true;
+            }
+            if (towers["C"].blocks.Count == 4)
+            {
+                return true;
+            }
+            else return false;
         }
     }
-    
+
     public class Block
     {
         //Constructor for Block
         public Block(int weight)
         {
             //Visual representation of weights
-            if (weight == 1)
-            {
-               this.weight =  "1.    O";
-            };
-            if (weight == 2)
-            {
-               this.weight =  "2.   OOO";
-            };
-            if (weight == 3)
-            {
-               this.weight =  "3.  OOOOO";
-            };
-            if (weight == 4)
-            {
-               this.weight =  "4. OOOOOOO";
-            };
+            this.weight = weight;
         }
-        public string weight { get; private set; }
+        public int weight { get; private set; }
     }
 
     public class Tower
