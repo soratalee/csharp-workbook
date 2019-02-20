@@ -36,7 +36,9 @@ namespace TowersOfHanoi
             string consoleMoveFrom;
             string consoleMoveTo;
 
-            while (newGame.checkForWin() == false)
+            int turnsPlayed = 0;
+            //Game loop
+            while (newGame.checkForWin(turnsPlayed) == false)
             {
                 Console.WriteLine("Enter in tower(A, B, or C) to move FROM:");
                 consoleMoveFrom = (Console.ReadLine());
@@ -47,6 +49,7 @@ namespace TowersOfHanoi
                 if (newGame.isLegal(newGame.towers[consoleMoveFrom], newGame.towers[consoleMoveTo]))
                 {
                     newGame.movePiece(newGame.towers[consoleMoveFrom], newGame.towers[consoleMoveTo]);
+                    turnsPlayed ++;
                 }
                 else
                 {
@@ -79,7 +82,7 @@ namespace TowersOfHanoi
         {
             moveTo.blocks.Push(moveFrom.blocks.Peek());
             moveFrom.blocks.Pop();
-
+        
         }
 
         public bool isLegal(Tower moveFrom, Tower moveTo)
@@ -105,14 +108,17 @@ namespace TowersOfHanoi
             else return false;
         }
 
-        public bool checkForWin()
+        //Checking for win conditions
+        public bool checkForWin(int turnsPlayed)
         {
-            if (towers["B"].blocks.Count == 4)
+            if (towers["A"].blocks.Count ==0 && towers["B"].blocks.Count == 0)
             {
+                Console.WriteLine("Congratulations! You have won! You have finished this in {0} turns.", turnsPlayed);
                 return true;
             }
-            if (towers["C"].blocks.Count == 4)
+            if (towers["A"].blocks.Count ==0 && towers["C"].blocks.Count == 0)
             {
+                Console.WriteLine("Congratulations! You have won! You have finished this in {0} turns.", turnsPlayed);
                 return true;
             }
             else return false;
@@ -139,11 +145,6 @@ namespace TowersOfHanoi
         {
             this.towerName = towerName;
             this.blocks = Blocks;
-        }
-
-        public void insertToTower()
-        {
-
         }
     }
 }
