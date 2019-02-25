@@ -8,7 +8,7 @@ namespace Classes
         static void Main(string[] args)
         {
             //Instantiate classes of cars
-            Vehicle Corlla = new Car("Toyota", "Corolla", "DEF-5678", 19000.50);
+            Vehicle Corolla = new Car("Toyota", "Corolla", "DEF-5678", 19000.50);
             Vehicle Civic = new Car("Honda", "Civic", "FED-1209", 20000.99);
             Vehicle Prius = new Car("Toyota", "Prius", "HJK-6789", 28000.99);
             Vehicle Model3 = new Car("Tesla", "Model 3", "CUSTOM123", 79000.95);
@@ -22,7 +22,7 @@ namespace Classes
             CarLot Lot2 = new CarLot();
 
             //Enter in Lot list
-            Lot1.addVehicle(Corlla);
+            Lot1.addVehicle(Corolla);
             Lot1.addVehicle(Civic);
             Lot1.addVehicle(Prius);
             Lot1.addVehicle(Model3);
@@ -37,7 +37,7 @@ namespace Classes
 
     }
 
-    abstract class Vehicle
+    public abstract class Vehicle
     {
         //Vehicle variables
         public string make;
