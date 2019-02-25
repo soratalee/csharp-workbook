@@ -6,10 +6,19 @@ namespace RockPaperScissors
     {
         public static void Main()
         {
+            
+            //Read user's input
             Console.WriteLine("Enter your hand:");
             string hand1 = Console.ReadLine().ToLower();
             string hand2 = ComputerHandGenerator();
-            Console.WriteLine(CompareHands(hand1, hand2));
+
+            //Tests 1 nd 2 for valid input
+            if (test1(hand1)&&test1(hand2))
+            {
+                Console.WriteLine("You chose "+hand1+". The computer chose "+hand2+". ");
+                Console.WriteLine(CompareHands(hand1, hand2));
+            }
+            else Console.WriteLine("Error. Please enter a valid hand ('rock','paper','scissors')!");
 
             // leave this command at the end so your program does not close automatically
             Console.ReadLine();
@@ -25,7 +34,7 @@ namespace RockPaperScissors
                 hand1 = "scissors";
             }
 
-            // Your code here
+            //Win/Loss/Tie logic Returns the outcome to Main
             if (hand1 == hand2)
             {
                 Verdict = "You chose "+hand1+". The Computer chose "+ hand2+"... It's a tie!";
@@ -40,9 +49,12 @@ namespace RockPaperScissors
             }
             return Verdict;
         }
+
+        //Computer random generator based on numberical value
         public static string ComputerHandGenerator()
         {
             String ComputerHand = "";
+            //Random numbers 1-3
             Random r = new Random();
             int Random = (r.Next(1,4));
 
@@ -59,6 +71,25 @@ namespace RockPaperScissors
                 ComputerHand = "scissors";
             }
             return ComputerHand;
+        }
+
+        //Test 1 for Human Input
+        public static bool test1(string hand1)
+        {
+            return
+                hand1 == "rock" ||
+                hand1 == "scissors" ||
+                hand1 == "scissor" ||
+                hand1 == "paper";
+        }
+        //Test 2 for Computer Input
+        public static bool test2(string hand2)
+        {
+            return
+                hand2 == "rock" ||
+                hand2 == "scissors" ||
+                hand2 == "scissor" ||
+                hand2 == "paper";
         }
     }
 }
