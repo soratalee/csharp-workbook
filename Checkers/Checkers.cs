@@ -171,6 +171,11 @@ namespace Checkers
                 {
                     pickupArray = Array.ConvertAll(pickup.Split(','), int.Parse);
                 }
+
+                catch (IndexOutOfRangeException)
+                {
+                    Console.WriteLine("An index was out of range!");
+                }
                 catch
                 {
                     Console.WriteLine("Please follow the format of the x value followed by a comma and a y value (ex. 0,1)!");
@@ -199,7 +204,15 @@ namespace Checkers
                     int placementRow = placementArray[0];
                     int placementColumn = placementArray[1];
                     newBoard.MoveChecker(placementRow, placementColumn);
-                    newBoard.DrawBoard();
+
+                    try
+                    {
+                        newBoard.DrawBoard();
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        Console.WriteLine("An index was out of range! Please enter integers 0-7.");
+                    }
                 }
             }
         }
