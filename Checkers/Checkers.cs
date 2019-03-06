@@ -95,14 +95,15 @@ namespace Checkers
             }
         }
 
-        public void PlaceCheckers()
-        {
-            for (var i = 0; i < Checkers.Count; i++)
-            {
-                int[] position = Checkers[i].Position;
-                Grid[position[0], position[1]] = Checkers[i].Symbol;
-            }
-        }
+        //This is used in the DrawBoard method
+        // public void PlaceCheckers()
+        // {
+        //     for (var i = 0; i < Checkers.Count; i++)
+        //     {
+        //         int[] position = Checkers[i].Position;
+        //         Grid[position[0], position[1]] = Checkers[i].Symbol;
+        //     }
+        // }
 
         public void DrawBoard()
         {
@@ -110,6 +111,7 @@ namespace Checkers
 
             Console.WriteLine("\t0\t1\t2\t3\t4\t5\t6\t7\t");
 
+            //Same thing as place checkers
             foreach (Checker Check in Checkers)
             {
                 int x = Check.Position[0];
@@ -132,13 +134,13 @@ namespace Checkers
             return Checkers.Find(x => x.Position.SequenceEqual(new List<int> { row, column }));
         }
 
-        public void MoveChecker(int row, int column)
+        public void MoveChecker(int row, int column, string color)
         {
-            Checker Check = new Checker("Black", new int[] { row, column });
+            Checker Check = new Checker(color, new int[] { row, column });
             Checkers.Add(Check);
         }
 
-        public void RemoveChecker(int row, int column)
+        public void moveChecker(int row, int column)
         {
             Checkers.Remove(SelectChecker(row, column));
         }
@@ -157,6 +159,9 @@ namespace Checkers
             newBoard.GenerateCheckers();
             newBoard.DrawBoard();
             bool endGame = false;
+            string moveChecker;
+            bool moveCheckerBool = false;
+            string color = "Black";
 
             while (endGame != true)
             {
@@ -164,55 +169,101 @@ namespace Checkers
                 string placement;
                 bool proceed = true;
 
-                Console.WriteLine("Enter Pickup Row and Column (ex. 1,2):");
-                pickup = Console.ReadLine();
-                int[] pickupArray = new int[2];
-                try
+
+                Console.WriteLine("Enter 'Y' to move a checker. Enter 'N' to remove a checker.");
+                moveChecker = Console.ReadLine();
+
+                if (moveChecker == "Y")
                 {
-                    pickupArray = Array.ConvertAll(pickup.Split(','), int.Parse);
+                    moveCheckerBool = true;
+                }
+                else if (moveChecker == "N")
+                {
+                    moveCheckerBool = false;
                 }
 
-                catch (IndexOutOfRangeException)
-                {
-                    Console.WriteLine("An index was out of range!");
-                }
-                catch
-                {
-                    Console.WriteLine("Please follow the format of the x value followed by a comma and a y value (ex. 0,1)!");
-                    proceed = false;
-                }
 
-                if (proceed == true)
+
+                if (moveChecker == "Y" || moveChecker == "N")
                 {
-                    int pickUpRow = pickupArray[0];
-                    int pickUpColumn = pickupArray[1];
-                    newBoard.RemoveChecker(pickUpRow, pickUpColumn);
+                    if (moveCheckerBool == true)
+                    {
+                        Console.WriteLine("Enter Pickup Row and Column (ex. 1,2):");
+                    }
+                    else if (moveCheckerBool == false)
+                    {
+                        Console.WriteLine("Enter Row and Column to remove (ex. 1,2):");
+                    }
 
-                    Console.WriteLine("Enter Placement Row and Column (ex. 1,2):");
-                    placement = Console.ReadLine();
-                    int[] placementArray = new int[2];
-
+                    pickup = Console.ReadLine();
+                    int[] pickupArray = new int[2];
                     try
                     {
-                        placementArray = Array.ConvertAll(placement.Split(','), int.Parse);
+                        pickupArray = Array.ConvertAll(pickup.Split(','), int.Parse);
                     }
                     catch
                     {
                         Console.WriteLine("Please follow the format of the x value followed by a comma and a y value (ex. 0,1)!");
+                        proceed = false;
                     }
 
-                    int placementRow = placementArray[0];
-                    int placementColumn = placementArray[1];
-                    newBoard.MoveChecker(placementRow, placementColumn);
+                    if (pickupArray[0] < 8 && pickupArray[1] < 8 && pickupArray[0] > -1 && pickupArray[1] > -1)
+                    {
+                        if (proceed == true)
+                        {
+                            int pickUpRow = pickupArray[0];
+                            int pickUpColumn = pickupArray[1];
 
-                    try
-                    {
-                        newBoard.DrawBoard();
+                            Checker newChecker = newBoard.SelectChecker(pickUpRow, pickUpColumn);
+                            if (newChecker == null)
+                            {
+                                Console.WriteLine("You have selected a checker piece that does not exist! Please enter a correct location of checker.");
+                            }
+                            else
+                            {
+                                newBoard.moveChecker(pickUpRow, pickUpColumn);
+
+                                if (moveCheckerBool == true)
+                                {
+                                    Console.WriteLine("Enter Placement Row and Column (ex. 1,2):");
+                                    placement = Console.ReadLine();
+                                    int[] placementArray = new int[2];
+
+                                    try
+                                    {
+                                        placementArray = Array.ConvertAll(placement.Split(','), int.Parse);
+                                    }
+                                    catch
+                                    {
+                                        Console.WriteLine("Please follow the format of the x value followed by a comma and a y value (ex. 0,1)!");
+                                    }
+
+                                    int placementRow = placementArray[0];
+                                    int placementColumn = placementArray[1];
+
+
+                                    newBoard.MoveChecker(placementRow, placementColumn, color);
+                                }
+                                try
+                                {
+                                    newBoard.DrawBoard();
+                                }
+                                catch (IndexOutOfRangeException)
+                                {
+                                    Console.WriteLine("An index was out of range! Please enter integers 0-7.");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("The numbers are out of index. Please enter in numbers 0-7 only!");
+                        }
                     }
-                    catch (IndexOutOfRangeException)
-                    {
-                        Console.WriteLine("An index was out of range! Please enter integers 0-7.");
-                    }
+                }
+
+                else
+                {
+                    Console.WriteLine("Please enter 'Y' or 'N'!");
                 }
             }
         }
