@@ -243,6 +243,14 @@ namespace Checkers
 
 
                                     newBoard.MoveChecker(placementRow, placementColumn, color);
+                                    if (color == "Black")
+                                    {
+                                        color = "White";
+                                    }
+                                    else
+                                    {
+                                        color = "Black";
+                                    }
                                 }
                                 try
                                 {
