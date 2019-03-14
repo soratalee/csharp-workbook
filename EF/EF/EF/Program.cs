@@ -86,10 +86,10 @@ namespace EF
                         CorrectInput = false;
                         while (CorrectInput != true)
                         {
-                            Console.WriteLine("Which field do you want to search by?[TITLE, LOCATION, DESCRIPTION, RATING]");
+                            Console.WriteLine("Which field do you want to search by?[ID, TITLE, LOCATION, DESCRIPTION, RATING]");
                             userEditOptions = Console.ReadLine().ToUpper();
 
-                            if (userEditOptions == "TITLE" || userEditOptions == "LOCATION" || userEditOptions == "DESCRIPTION" || userEditOptions == "RATING")
+                            if (userEditOptions == "ID" || userEditOptions == "TITLE" || userEditOptions == "LOCATION" || userEditOptions == "DESCRIPTION" || userEditOptions == "RATING")
                             {
                                 Console.WriteLine("Enter in the {0} you want to look up:", userEditOptions);
                                 userSearch = Console.ReadLine();
