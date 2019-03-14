@@ -167,7 +167,7 @@ namespace EF
                         {
                             Console.WriteLine("Enter in the Id of the entry you want removed:");
                             userEditIdSelect = Console.ReadLine();
-                            if (int.TryParse(userEditIdSelect, out num))
+                            if (!int.TryParse(userEditIdSelect, out num))
                             {
                                 Console.WriteLine("Please enter an Id number value only!");
                                 CorrectInput = false;
@@ -176,7 +176,6 @@ namespace EF
                             {
 
                                 string sqltext = "DELETE from Photos where Id = " + userEditIdSelect.ToString();
-                                Console.WriteLine(sqltext);
                                 SqlCommand cmd = new SqlCommand(sqltext, connection);
 
                                 connection.Open();
